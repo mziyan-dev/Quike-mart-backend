@@ -8,7 +8,7 @@ import {
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 
-@Entity('admins')
+@Entity('Admin')
 export class Admin {
   @PrimaryGeneratedColumn()
   id: number;
