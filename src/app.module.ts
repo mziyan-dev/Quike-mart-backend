@@ -5,6 +5,8 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Admin } from './auth/entities/admin.entity';
+import { ProductsModule } from './Products/products.module';
+import { Product } from './Products/Entities/product.entity';
 
 @Module({
   imports: [
@@ -17,14 +19,13 @@ import { Admin } from './auth/entities/admin.entity';
       port: parseInt(process.env.DATABASE_PORT || '3306'),
       username: "root",
       password: process.env.DATABASE_PASSWORD,
-      database: "Quike_Mart",
+      database: "quike_Mart",
       autoLoadEntities: true,
-      synchronize: true,
-      entities: [Admin],
+      synchronize: false,
+      entities: [Admin, Product],
     }),
- 
       AuthModule,
-     
+      ProductsModule,
       ],
   controllers: [AppController],
   providers: [AppService],

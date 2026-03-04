@@ -2,47 +2,47 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { MoreThan, Repository } from 'typeorm';
 import { Admin } from './entities/admin.entity'
 import { LoginDto } from './dto/login.dto';
+import { Customer } from './entities/customer.entity';
 
 @Injectable()
 export class AuthService {
   constructor(
+    @InjectRepository(Customer)
+    private customerRepository: Repository<Customer>,
     @InjectRepository(Admin)
     private adminRepository: Repository<Admin>,
     private jwtService: JwtService,
   ) { }
 
-  async login(dto: LoginDto) {
+  async login(dto: LoginDto, userType: 'admin' | 'customer') {
     const { email, password } = dto;
-    const admin = await this.adminRepository.findOne({ where: { email } });
-    if (!admin) {
-      throw new UnauthorizedException('Invalid credentials');
-    }
-    const match = await bcrypt.compare(password, admin.password);
+    let user: Customer | Admin | null;
 
-    if (!match) {
-      throw new UnauthorizedException('Invalid credentials');
+    if (userType === 'admin') {
+      user = await this.adminRepository.findOne({ where: { email } });
+    } else {
+      user = await this.customerRepository.findOne({ where: { email } });
     }
+
+    if (!user) throw new UnauthorizedException('User not found');
+
+    const match = await bcrypt.compare(password, user.password);
+    if (!match) throw new UnauthorizedException('Invalid credentials');
+
     const payload = {
-      id: admin.id,
-      email: admin.email,
-      role: 'admin',
+      id: user.id,
+      email: user.email,
+      role: user.role
     };
-
-    const token = await this.jwtService.signAsync(payload);
 
     return {
-      message: 'Login successful',
-      access_token: token,
-      admin: {
-        id: admin.id,
-        email: admin.email,
-      },
+      access_token: await this.jwtService.signAsync(payload),
+      role: user.role,
     };
   }
-
   async validateAdmin(id: number): Promise<Admin | null> {
     return this.adminRepository.findOne({ where: { id } });
   }
@@ -54,7 +54,23 @@ export class AuthService {
       access_token: '',
     };
   }
+  async getAllCustomers() {
+    return await this.customerRepository.find({
+      select: ['id', 'email', 'createdAt'],
+      order: { createdAt: 'DESC' }
+    });
+  }
 
+  async getCustomerStats() {
+    const total = await this.customerRepository.count();
+    
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    const newToday = await this.customerRepository.count({
+      where: { createdAt: MoreThan(today) } 
+    });
 
+    return { total, newToday };
+  }
 }
-

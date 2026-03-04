@@ -8,7 +8,7 @@ import {
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 
-@Entity('Admin')
+@Entity('admin')
 export class Admin {
   @PrimaryGeneratedColumn()
   id: number;
@@ -19,7 +19,7 @@ export class Admin {
   @Column()
   password: string;
 
-  @Column({ default: 'admin' })
+  @Column({ default: "admin" })
   role: string;
 
   @Column({ default: true })
