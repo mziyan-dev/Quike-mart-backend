@@ -4,10 +4,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { Admin } from './entities/admin.entity';
+import { Customer } from './entities/customer.entity';
 
 @Module({
   imports: [
-   TypeOrmModule.forFeature([Admin]),
+    TypeOrmModule.forFeature([Admin, Customer]),
     JwtModule.register({
       secret: 'SUPER_SECRET_KEY',
       signOptions: { expiresIn: '1d' },

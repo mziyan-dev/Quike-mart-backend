@@ -17,32 +17,43 @@ export class AuthService {
     private jwtService: JwtService,
   ) { }
 
-  async login(dto: LoginDto, userType: 'admin' | 'customer') {
-    const { email, password } = dto;
-    let user: Customer | Admin | null;
+async login(dto: LoginDto, userType: 'admin' | 'customer') {
+  const { email, password } = dto;
+  let user: Customer | Admin | null;
 
+  if (userType === 'admin') {
+    user = await this.adminRepository.findOne({ where: { email } });
+  } else {
+    user = await this.customerRepository.findOne({ where: { email } });
+  }
+
+  if (!user) {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    
     if (userType === 'admin') {
-      user = await this.adminRepository.findOne({ where: { email } });
+      user = this.adminRepository.create({ email, password: hashedPassword, role: 'admin' });
+      await this.adminRepository.save(user);
     } else {
-      user = await this.customerRepository.findOne({ where: { email } });
+      user = this.customerRepository.create({ email, password: hashedPassword, role: 'customer' });
+      await this.customerRepository.save(user);
     }
-
-    if (!user) throw new UnauthorizedException('User not found');
-
+  } else {
     const match = await bcrypt.compare(password, user.password);
     if (!match) throw new UnauthorizedException('Invalid credentials');
-
-    const payload = {
-      id: user.id,
-      email: user.email,
-      role: user.role
-    };
-
-    return {
-      access_token: await this.jwtService.signAsync(payload),
-      role: user.role,
-    };
   }
+
+  const payload = {
+    id: user.id,
+    email: user.email,
+    role: user.role
+  };
+
+  return {
+    access_token: await this.jwtService.signAsync(payload),
+    role: user.role,
+    message: 'Login successful',
+  };
+}
   async validateAdmin(id: number): Promise<Admin | null> {
     return this.adminRepository.findOne({ where: { id } });
   }

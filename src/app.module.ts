@@ -7,13 +7,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Admin } from './auth/entities/admin.entity';
 import { ProductsModule } from './Products/products.module';
 import { Product } from './Products/Entities/product.entity';
+import { Customer } from './auth/entities/customer.entity';
 
 @Module({
   imports: [
-        ConfigModule.forRoot({
-      isGlobal: true, 
+    ConfigModule.forRoot({
+      isGlobal: true,
     }),
-      TypeOrmModule.forRoot({
+    TypeOrmModule.forRoot({
       type: 'mysql',
       host: process.env.DATABASE_HOST,
       port: parseInt(process.env.DATABASE_PORT || '3306'),
@@ -22,12 +23,12 @@ import { Product } from './Products/Entities/product.entity';
       database: "quike_Mart",
       autoLoadEntities: true,
       synchronize: false,
-      entities: [Admin, Product],
+      entities: [Admin, Product, Customer],
     }),
-      AuthModule,
-      ProductsModule,
-      ],
+    AuthModule,
+    ProductsModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

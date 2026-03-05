@@ -27,10 +27,10 @@ export class AuthController {
     return this.authService.getAllCustomers();
   }
 
-  @Get('admin/customer-stats')
-  async fetchStats() {
-    return this.authService.getCustomerStats();
-  }
+  // @Get('admin/customer-stats')
+  // async fetchStats() {
+  //   return this.authService.getCustomerStats();
+  // }
 
 }
 

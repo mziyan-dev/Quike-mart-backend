@@ -20,8 +20,6 @@ export class Customer {
     password: string;
 
     @Column({ default: "customer" })
-
-
     role: string;
 
     @Column({ default: true })
