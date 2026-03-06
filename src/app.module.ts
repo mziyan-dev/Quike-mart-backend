@@ -8,6 +8,8 @@ import { Admin } from './auth/entities/admin.entity';
 import { ProductsModule } from './Products/products.module';
 import { Product } from './Products/Entities/product.entity';
 import { Customer } from './auth/entities/customer.entity';
+import { OrdersModule } from './orders/orders.module';
+import { Order } from './orders/Entities/order.entity';
 
 @Module({
   imports: [
@@ -20,13 +22,14 @@ import { Customer } from './auth/entities/customer.entity';
       port: parseInt(process.env.DATABASE_PORT || '3306'),
       username: "root",
       password: process.env.DATABASE_PASSWORD,
-      database: "quike_Mart",
+      database: "quike_mart",
       autoLoadEntities: true,
-      synchronize: false,
-      entities: [Admin, Product, Customer],
+      synchronize: true,
+      entities: [Admin, Product, Customer, Order],
     }),
     AuthModule,
     ProductsModule,
+    OrdersModule,
   ],
   controllers: [AppController],
   providers: [AppService],

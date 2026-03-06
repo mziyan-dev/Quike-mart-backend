@@ -13,6 +13,9 @@ export class Customer {
     @PrimaryGeneratedColumn()
     id: number;
 
+    @Column()
+    fullname: string;
+
     @Column({ unique: true })
     email: string;
 

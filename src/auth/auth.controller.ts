@@ -6,6 +6,11 @@ import { LoginDto } from './dto/login.dto';
 export class AuthController {
   constructor(private authService: AuthService) { }
 
+  @Post('register')
+  register(@Body() dto: any) {
+    return this.authService.register(dto);
+  }
+  
   @Post('admin/login')
   adminLogin(@Body() dto: LoginDto) {
     return this.authService.login(dto, 'admin');
