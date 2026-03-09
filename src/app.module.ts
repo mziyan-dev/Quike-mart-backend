@@ -10,6 +10,8 @@ import { Product } from './Products/Entities/product.entity';
 import { Customer } from './auth/entities/customer.entity';
 import { OrdersModule } from './orders/orders.module';
 import { Order } from './orders/Entities/order.entity';
+import { ShippingModule } from './shipping/shipping.module';
+import { Shipment } from './shipping/Entities/shipping.entity';
 
 @Module({
   imports: [
@@ -25,11 +27,12 @@ import { Order } from './orders/Entities/order.entity';
       database: "quike_mart",
       autoLoadEntities: true,
       synchronize: true,
-      entities: [Admin, Product, Customer, Order],
+      entities: [Admin, Product, Customer, Order, Shipment],
     }),
     AuthModule,
     ProductsModule,
     OrdersModule,
+    ShippingModule,
   ],
   controllers: [AppController],
   providers: [AppService],

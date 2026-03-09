@@ -1,11 +1,16 @@
-export class CreateOrderDto {
+import { IsArray, IsNumber, IsString } from 'class-validator';
 
+export class CreateOrderDto {
+  
+  @IsNumber()
   customerId: number;
 
+  @IsString() 
   shippingAddress: string;
 
+  @IsArray()
   items: {
-    productId: number;
+    productIds: number[];
     quantity: number;
   }[];
 }

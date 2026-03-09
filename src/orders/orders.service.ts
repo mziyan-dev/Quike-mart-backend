@@ -3,29 +3,28 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Order } from './Entities/order.entity';
 import { Customer } from '../auth/entities/customer.entity';
+import { CreateOrderDto } from './dto/create-order-dto';
 
 @Injectable()
 export class OrdersService {
-
     constructor(
         @InjectRepository(Order)
         private orderRepository: Repository<Order>,
-
         @InjectRepository(Customer)
         private customerRepository: Repository<Customer>,
     ) { }
 
-    async createOrder(customerId: number, productIds: number[]) {
+    async createOrder(dto: CreateOrderDto) {
         const customer = await this.customerRepository.findOne({
-            where: { id: customerId }
+            where: { id: dto.customerId }
         });
-        if (!customer) {
-            throw new Error('Customer not found');
-        }
+
         const order = this.orderRepository.create({
-            customerId: customer.id,
-            products: productIds.map(id => ({ id })),
+            customerId: dto.customerId,
+            shippingAddress: dto.shippingAddress,
+            totalAmount: 0,
         });
+
         return await this.orderRepository.save(order);
     }
 

@@ -22,9 +22,6 @@ export class Admin {
   @Column({ default: "admin" })
   role: string;
 
-  @Column({ default: true })
-  isActive: boolean;
-
   @CreateDateColumn()
   createdAt: Date;
 

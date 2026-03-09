@@ -31,13 +31,13 @@ export class Order {
     totalAmount: number;
 
     @Column({
-        default: 'pending'
+    default: 'pending'
     })
     status: string;
     // pending | processing | shipped | delivered | cancelled
 
     @Column({
-        default: 'unpaid'
+    default: 'unpaid'
     })
     paymentStatus: string;
     // unpaid | paid
