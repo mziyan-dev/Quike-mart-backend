@@ -12,7 +12,8 @@ import { OrdersModule } from './orders/orders.module';
 import { Order } from './orders/Entities/order.entity';
 import { ShippingModule } from './shipping/shipping.module';
 import { Shipment } from './shipping/Entities/shipping.entity';
-
+import { CartModule } from './cart/cart.module';
+import { Cart } from './cart/entities/cart.entity';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -27,12 +28,14 @@ import { Shipment } from './shipping/Entities/shipping.entity';
       database: "quike_mart",
       autoLoadEntities: true,
       synchronize: true,
-      entities: [Admin, Product, Customer, Order, Shipment],
+      entities: [Admin, Product, Customer, Order, Shipment , Cart],
     }),
     AuthModule,
     ProductsModule,
     OrdersModule,
     ShippingModule,
+    CartModule,
+    
   ],
   controllers: [AppController],
   providers: [AppService],

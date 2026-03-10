@@ -5,8 +5,10 @@ import {
     CreateDateColumn,
     UpdateDateColumn,
     BeforeInsert,
+    OneToMany,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import { Cart } from 'src/cart/entities/cart.entity';
 
 @Entity('customer')
 export class Customer {
@@ -24,6 +26,9 @@ export class Customer {
 
     @Column({ default: "customer" })
     role: string;
+
+    @OneToMany(() => Cart, (cart) => cart.customer)
+    cartItems: Cart[];
 
     @CreateDateColumn()
     createdAt: Date;
