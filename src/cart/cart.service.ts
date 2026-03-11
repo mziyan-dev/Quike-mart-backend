@@ -14,17 +14,16 @@ export class CartService {
     ) { }
 
     async addToCart(createCartDto: CreateCartDto) {
-
         const product = await this.productRepository.findOne({
             where: { id: createCartDto.productId }
         });
-
         if (!product) {
             throw new NotFoundException("Product not found");
         }
         const cart = new Cart();
         cart.product = product;
         cart.quantity = createCartDto.quantity;
+        cart.customer = { id: createCartDto.customerId } as any; // Assuming you have a Customer entity and relation set up
         return await this.cartRepository.save(cart);
     }
 
@@ -39,24 +38,24 @@ export class CartService {
     async updateCartItem(cartItemId: number, updateData: UpdateCartDto): Promise<{ success: boolean; data?: Cart; message?: string }> {
         const item = await this.cartRepository.findOne({ where: { id: cartItemId } });
 
-        // Simple check
         if (!item) {
             return { success: false, message: 'Cart item not found' };
         }
 
-        // Update item
         Object.assign(item, updateData);
         const updatedItem = await this.cartRepository.save(item);
 
         return { success: true, data: updatedItem };
     }
 
-    async removeFromCart(cartItemId: number): Promise<void> {
+    async removeFromCart(cartItemId: number): Promise<{ success: boolean; message: string }> {
         await this.cartRepository.delete(cartItemId);
+        return { success: true, message: 'Cart item removed successfully' };
     }
 
-    async clearCart(customerId: number): Promise<void> {
+    async clearCart(customerId: number): Promise<{ success: boolean; message: string }> {
         await this.cartRepository.delete({ customer: { id: customerId } });
+        return { success: true, message: 'Cart cleared successfully' };
     }
 
 

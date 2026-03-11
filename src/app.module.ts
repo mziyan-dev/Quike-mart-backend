@@ -14,6 +14,7 @@ import { ShippingModule } from './shipping/shipping.module';
 import { Shipment } from './shipping/Entities/shipping.entity';
 import { CartModule } from './cart/cart.module';
 import { Cart } from './cart/entities/cart.entity';
+import { PaymentModule } from './payment/payment.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -35,6 +36,7 @@ import { Cart } from './cart/entities/cart.entity';
     OrdersModule,
     ShippingModule,
     CartModule,
+    PaymentModule,
     
   ],
   controllers: [AppController],

@@ -5,4 +5,8 @@ export class UpdateCartDto {
   @IsNumber()
   quantity: number;
 
+  @IsNumber()
+  productId: number;
+
+
 }

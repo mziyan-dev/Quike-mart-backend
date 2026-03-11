@@ -8,4 +8,7 @@ export class CreateCartDto {
   @IsNumber()
   quantity: number;
 
+  @IsNumber()
+  customerId: number;
+
 }
