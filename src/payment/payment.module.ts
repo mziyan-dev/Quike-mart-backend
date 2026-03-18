@@ -4,10 +4,17 @@ import { PaymentController } from './payment.controller';
 import { Order } from 'src/orders/Entities/order.entity';
 import { Payment } from './Entites/payment.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { config } from 'dotenv';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Payment, Order])],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    TypeOrmModule.forFeature([Payment, Order])
+  ],
   providers: [PaymentService],
   controllers: [PaymentController]
 })
-export class PaymentModule {}
+export class PaymentModule { }
