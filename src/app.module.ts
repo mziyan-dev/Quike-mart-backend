@@ -23,12 +23,16 @@ import { PaymentModule } from './payment/payment.module';
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: process.env.DATABASE_HOST,
+      url: process.env.DATABASE_URL,
       port: parseInt(process.env.DATABASE_PORT || '3306'),
       username: "root",
       password: process.env.DATABASE_PASSWORD,
       database: "quike_mart",
       autoLoadEntities: true,
-      synchronize: true,
+      synchronize: false,
+      ssl: {
+        rejectUnauthorized: false // Railway MySQL ke liye ye lazmi hai
+      },
       entities: [Admin, Product, Customer, Order, Shipment , Cart],
     }),
     AuthModule,
