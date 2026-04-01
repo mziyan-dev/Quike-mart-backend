@@ -32,4 +32,7 @@ export class Product {
     @Column()
     image: string;
 
+    @Column()
+    isDeleted: boolean;
+
 }
