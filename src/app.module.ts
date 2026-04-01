@@ -29,7 +29,7 @@ import { PaymentModule } from './payment/payment.module';
       password: process.env.DATABASE_PASSWORD,
       database: "quike_mart",
       autoLoadEntities: true,
-      synchronize: false,
+      synchronize: true,
       ssl: {
         rejectUnauthorized: false // Railway MySQL ke liye ye lazmi hai
       },
