@@ -8,6 +8,6 @@ export class LoginDto {
   @MinLength(6)
   password: string;
 
-  // @IsNotEmpty()
-  // role: string;
+  @IsNotEmpty()
+  role: string;
 }
